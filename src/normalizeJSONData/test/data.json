@@ -1,0 +1,13 @@
+[
+    {
+        foo: {
+            bar: [
+                [{ baz: [{ jaz: true }] }, { baz: [{ jaz: true }] }],
+                [
+                    { baz: [{ jaz: false }], undefined: true },
+                    { baz: [{ jaz: false }], undefined: true },
+                ],
+            ],
+        },
+    },
+];
