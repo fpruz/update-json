@@ -2,7 +2,7 @@
   "name": "json-object-editor",
   "version": "1.0.0",
   "main": "index.ts",
-  "author": "AI-MAPS",
+  "author": "Filip Pruzinec",
   "license": "MIT",
   "scripts": {
     "test": "jest --runInBand -c jest.config.js"
