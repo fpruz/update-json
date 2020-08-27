@@ -1,10 +1,10 @@
-import JSONDataNormalizer from '../JSONDataNormalizer';
-import data from './blankData.json';
+import UpdateJSON from '../UpdateJSON';
+import data from './data/data.json';
 
 test('nothing', async () => {
-    const json = new JSONDataNormalizer(data);
-    json.update('foo.bar[[baz.0.jaz]]', true);
-    console.log(JSON.stringify(json.data()));
+    const json = new UpdateJSON(data);
+    const out = json.update('foo.bar', 3).update('foo.bar', number => [...Array(number).keys()]).data();
+    console.log(JSON.stringify(out));
     // console.log(await json.data());
 
     // expect(json.data()).toEqual(
