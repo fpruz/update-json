@@ -1,7 +1,14 @@
 import _ from 'lodash';
+import { validator, ValidateFunc } from '@exodus/schemasafe';
 
 export default class UpdateJSON<Entry> {
-    constructor(private entries: Entry[]) {}
+    private validateWithSchema: ValidateFunc | null = null;
+
+    constructor(private entries: Entry[], schema?: any) {
+        if (schema) {
+            this.validateWithSchema = validator(schema);
+        }
+    }
 
     public update<T>(key: string, value: ((arg: any) => T) | T) {
         const paths = this.parsePath(key);
@@ -20,13 +27,13 @@ export default class UpdateJSON<Entry> {
         PathIter: PathIterator,
     ): any {
         const [nextPath, nextIterator] = PathIter.next();
-        console.log(path, nextPath);
+
         if (_.isNull(path)) {
             return (json as any[]).map((json: any) => this.set(json, nextPath, value, nextIterator.clone()));
         } else if (nextPath || _.isNull(nextPath)) {
             const get = _.get(json, path);
-            if (_.isUndefined(get)) {
-                throw new Error('Invalid entry.');
+            if (_.isUndefined(get) || !_.isArray(get)) {
+                throw new Error('Invalid entry or path.');
             }
             _.set(
                 json,
@@ -46,8 +53,7 @@ export default class UpdateJSON<Entry> {
         const match = /^([\w\.]+)?(\[?(.+)\])?$/.exec(inputPath);
 
         if (_.isNull(match)) {
-            console.log(inputPath, match);
-            throw new Error('Invalid entry.');
+            throw new Error('Invalid entry or path.');
         }
 
         const [, path, , rest] = match;
@@ -56,6 +62,18 @@ export default class UpdateJSON<Entry> {
     }
     public data() {
         return this.entries;
+    }
+    public validate() {
+        if (!this.validateWithSchema) {
+            throw new Error('Schema not defined.');
+        }
+
+        for (const entry of this.entries) {
+            if (!this.validateWithSchema(entry)) {
+                throw new Error(`Invalid entry ${JSON.stringify(entry)}`);
+            }
+        }
+        return this;
     }
 }
 

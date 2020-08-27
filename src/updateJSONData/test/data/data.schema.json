@@ -1,0 +1,51 @@
+{
+    "type": "object",
+    "required": [
+        "foo"
+    ],
+    "properties": {
+        "foo": {
+            "type": "object",
+            "required": [
+                "bar"
+            ],
+            "properties": {
+                "bar": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "baz",
+                                "numz"
+                            ],
+                            "properties": {
+                                "baz": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "qux"
+                                        ],
+                                        "properties": {
+                                            "qux": {
+                                                "type": "null"
+                                            }
+                                        }
+                                    }
+                                },
+                                "numz": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
